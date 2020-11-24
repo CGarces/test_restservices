@@ -17,7 +17,7 @@ services:
     networks:
       - test-mysql
       
-  route-main:
+  route-service:
     image: demo-routes/routes_service
     networks:
       - test-mysql
@@ -30,8 +30,18 @@ services:
       - DATABASE_HOST=mysql-standalone
       - DATABASE_USER=test
       - DATABASE_PASSWORD=test
-      - DATABASE_NAME=adidas
+      - DATABASE_NAME=testroutes
       - DATABASE_PORT=3306
+
+  route-calculator:
+    image: demo-routes/routes_calculator
+    networks:
+      - test-mysql
+    restart: on-failure
+    depends_on:
+      - route-service
+    ports:
+      - 8081:8081
    
 networks:
   test-mysql: 
