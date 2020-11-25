@@ -1,3 +1,4 @@
+
 # Test rest service
 
 Project to test the communication between to rest services.
@@ -11,12 +12,14 @@ It's a implementation of the dijkstra's algorithm path-finding
 
 The project uses 3 different containers.
 
- - **route-calculator** 
+ - **route-calculator**.
+ 
 Calculate the best route using the destination and origin passed as parameter.
 
 The possible routes are provided by another rest service (route-service) 
 
- - **route-service**. 
+ - **route-service**.
+ 
 Allow CRUD actions of the different routes. The routes has the following format:
 
 | id|city|destiny|departure|arrival|
@@ -25,7 +28,12 @@ Allow CRUD actions of the different routes. The routes has the following format:
 | 2|Barcelona|Valencia|09:00:00|16:00:00|
 | 3|Madrid|Valencia|12:00:00|14:00:00|
 
- - **mysql-standalone**. 
+ - **discovery-service**.
+ 
+Eureka server instance to auto register the rest services.
+
+ - **mysql-standalone**.
+
 Store the routes on MySQL database.
 
 ## Build
@@ -49,6 +57,7 @@ The steps are:
 
     ```Shell
     docker build -t demo-routes/routes_service ./routes_service
+    docker build -t demo-routes/discovery-service ./discovery-service
     docker build -t demo-routes/routes_calculator ./routes_calculator
     ```
 
@@ -79,10 +88,22 @@ Swagger Documentation are available (after run the project) at the following url
  - http://localhost:8080/swagger-ui.html 
  - http://localhost:8081/swagger-ui.html
 
+The status of each service can be checked on Eureka server
+
+ - http://localhost:8761
+
 ## Architecture used.
 
 The micro-services are developed using [Spring Boot framework](https://spring.io/projects/spring-boot). 
 It creates stand alone application with this own application server embedded.
+
+The services are registered on the eureka server that allow different possibilities (not all part of this sample code).
+
+ - Identify the services without know the ip or port used,
+ - Load balancing
+ - Allow horizontal scaling of each service.
+ - Manage different service versions
+ - Service maintenance operations.
 
 Swagger UI was used, in order to generate the API documentation, The Swagger interface can be used also to test the rest services.
 

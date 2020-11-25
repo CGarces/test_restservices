@@ -14,6 +14,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,15 +28,17 @@ public class RouteController {
   @Autowired
   private RestTemplate restTemplate;
 
-  // @Value("${server.routesservice.url}")
-  private String url = "http://route-service:8080/routes";
-
   private HashMap<String, Vertex> nodes;
   private List<Edge> edges;
 
   public Route[] getRoutes() {
     // Encapsulate the rest call to made more easy mock it.
-    return restTemplate.getForObject(url, Route[].class);
+    //return restTemplate.getForObject("http://routes-service/routes", Route[].class);
+    ResponseEntity<Route[]> res = restTemplate
+                .exchange("http://routes-service/routes", HttpMethod.GET, null,
+                        new ParameterizedTypeReference<Route[]>() {});
+    return res.getBody();
+
   }
 
   @RequestMapping(path = "/{origin}/{destination}", method = RequestMethod.GET)

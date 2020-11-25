@@ -1,6 +1,4 @@
-  
 version: '3'
-
 services:
 
   mysql-standalone:
@@ -14,15 +12,17 @@ services:
       - 3306:3306
     volumes:
       - ./bd_spring_docker:/var/lib/mysql
-    networks:
-      - test-mysql
-      
+
+  discovery-service:
+    image: demo-routes/discovery-service
+    ports:
+      - 8761:8761
+
   route-service:
     image: demo-routes/routes_service
-    networks:
-      - test-mysql
     restart: on-failure
     depends_on:
+      - discovery-service
       - mysql-standalone
     ports:
       - 8080:8080
@@ -32,16 +32,17 @@ services:
       - DATABASE_PASSWORD=test
       - DATABASE_NAME=testroutes
       - DATABASE_PORT=3306
+      - JAVA_OPTS=
+        -DEUREKA_SERVER=http://discovery-service:8761/eureka
 
   route-calculator:
     image: demo-routes/routes_calculator
-    networks:
-      - test-mysql
     restart: on-failure
     depends_on:
+      - discovery-service
       - route-service
     ports:
       - 8081:8081
-   
-networks:
-  test-mysql: 
+    environment:
+      - JAVA_OPTS=
+        -DEUREKA_SERVER=http://discovery-service:8761/eureka
