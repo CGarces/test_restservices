@@ -77,7 +77,7 @@ The deployed containers expose the services as rest micro-services
 	 - sample call
 		 - http://localhost:8081/Barcelona/Valencia
 
- - route-calculator
+ - route-service
 	 - http://localhost:8080/
 	 - sample call
 		 - http://localhost:8080/routes
