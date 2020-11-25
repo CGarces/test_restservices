@@ -19,7 +19,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.routestest.routescalculator.rest.CalculatedRoute;
 import com.routestest.routescalculator.rest.Route;
-import com.routestest.routescalculator.rest.RouteController;
+import com.routestest.routescalculator.rest.CalculatorController;
 
 /**
  * Test cases for RouteController class See route.json file to check data used
@@ -28,7 +28,7 @@ import com.routestest.routescalculator.rest.RouteController;
 public class RouteControllerTest {
 
   @Spy
-  private RouteController routeController;
+  private CalculatorController calculatorController;
 
   private static Route[] routes;
 
@@ -56,8 +56,8 @@ public class RouteControllerTest {
 
   @BeforeEach
   public void setUp() throws Exception {
-    routeController = spy(RouteController.class);
-    doReturn(routes).when(routeController).getRoutes(); // Mock implementation
+    calculatorController = spy(CalculatorController.class);
+    doReturn(routes).when(calculatorController).getRoutes(); // Mock implementation
   }
 
   /**
@@ -66,7 +66,7 @@ public class RouteControllerTest {
   @Test
   public void testNextDayRoute() {
 
-    ResponseEntity<CalculatedRoute> res = routeController.getRoutes("Barcelona", "Alicante");
+    ResponseEntity<CalculatedRoute> res = calculatorController.getRoutes("Barcelona", "Alicante");
     CalculatedRoute calculatedRoute = res.getBody();
 
     // Barcelona-Madrid-Valencia-Alicante.
@@ -82,7 +82,7 @@ public class RouteControllerTest {
   @Test
   public void testMultipleRoute() {
 
-    ResponseEntity<CalculatedRoute> res = routeController.getRoutes("Barcelona", "Valencia");
+    ResponseEntity<CalculatedRoute> res = calculatorController.getRoutes("Barcelona", "Valencia");
     CalculatedRoute calculatedRoute = res.getBody();
 
     // Barcelona-Madrid-Valencia.
@@ -97,7 +97,7 @@ public class RouteControllerTest {
    */
   @Test
   public void testNoroute() {
-    ResponseEntity<CalculatedRoute> res = routeController.getRoutes("Barcelona", "NotExists");
+    ResponseEntity<CalculatedRoute> res = calculatorController.getRoutes("Barcelona", "NotExists");
     assertEquals(res, ResponseEntity.notFound().build());
   }
 }
