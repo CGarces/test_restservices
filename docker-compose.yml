@@ -32,8 +32,7 @@ services:
       - DATABASE_PASSWORD=test
       - DATABASE_NAME=testroutes
       - DATABASE_PORT=3306
-      - JAVA_OPTS=
-        -DEUREKA_SERVER=http://discovery-service:8761/eureka
+      - EUREKA_SERVER=http://discovery-service:8761/eureka
 
   route-calculator:
     image: demo-routes/routes_calculator
@@ -44,5 +43,4 @@ services:
     ports:
       - 8081:8081
     environment:
-      - JAVA_OPTS=
-        -DEUREKA_SERVER=http://discovery-service:8761/eureka
+      - EUREKA_SERVER=http://discovery-service:8761/eureka
