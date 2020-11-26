@@ -42,9 +42,6 @@ Store the routes on MySQL database.
 
 ## Build
 
-The application is compiled inside the docker container using Maven.
-It creates bigger containers, but allows build the project only with docker.
-
 ### Pre-requisites
 
  - [Git](https://git-scm.com/)
@@ -57,15 +54,11 @@ The steps are:
 
     git clone https://github.com/CGarces/test_restservices.git
 
- 2. Build the containers using docker
+ 2. Build the containers using docker and maven wrapper
 
     ```Shell
-    docker build -t demo-routes/routes_service ./routes_service
-    docker build -t demo-routes/discovery-service ./discovery-service
-    docker build -t demo-routes/routes_calculator ./routes_calculator
-    docker build -t demo-routes/routes-gateway ./routes-gateway
+    ./mvnw compile jib:dockerBuild
     ```
-
 
 ## Run
 
@@ -121,3 +114,4 @@ Swagger UI was used, in order to generate the API documentation, The Swagger int
 
 MySQL was used to store the data. It's a well documented DDBB in order to work with java JPA and setup a docker image.
 
+The services can be deployed as Docker containers. To simplify the build process JIB is used, it allows to generate the containers without needing a separate Docker file.
