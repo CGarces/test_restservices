@@ -1,0 +1,40 @@
+
+# Spring properties
+spring:
+  application:
+     name: routes-gateway
+
+
+zuul:
+  host:
+    connect-timeout-millis: 5000000
+    socket-timeout-millis: 5000000
+  ignoredServices: '*'
+  routes:
+   routes-service:
+      path: /routes/**
+      serviceId: ROUTES-SERVICE
+      stripPrefix: false
+      #url: http://localhost:8080/routes/
+   routes-calculator:
+      path: /**
+      serviceId: ROUTES-CALCULATOR
+      stripPrefix: false
+      #url: http://localhost:8081/
+
+ribbon:
+  eureka:
+    enabled: true
+  ConnectTimeout: 5000000
+  ReadTimeout: 5000000
+
+# Discovery Server Access
+eureka:
+  client:
+    registerWithEureka: true
+    serviceUrl:
+      defaultZone: ${EUREKA_SERVER:http://localhost:8761/eureka}
+
+
+server:
+  port: 8662

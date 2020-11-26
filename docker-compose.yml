@@ -18,12 +18,22 @@ services:
     ports:
       - 8761:8761
 
+  routes-gateway:
+    image: demo-routes/routes-gateway
+    restart: on-failure
+    depends_on:
+      - discovery-service
+    ports:
+      - 8662:8662
+    environment:
+      - EUREKA_SERVER=http://discovery-service:8761/eureka
+
   route-service:
     image: demo-routes/routes_service
     restart: on-failure
     depends_on:
-      - discovery-service
       - mysql-standalone
+      - routes-gateway
     ports:
       - 8080:8080
     environment:
@@ -38,7 +48,7 @@ services:
     image: demo-routes/routes_calculator
     restart: on-failure
     depends_on:
-      - discovery-service
+      - routes-gateway
       - route-service
     ports:
       - 8081:8081

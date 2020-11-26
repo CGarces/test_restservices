@@ -11,11 +11,11 @@ import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 @SpringBootApplication
 public class RoutesCalculatorApplication {
 
-	@Bean
+  @Bean
   @LoadBalanced
-	public RestTemplate restTemplate() {
-		return new RestTemplate();
-	}
+  public RestTemplate restTemplate() {
+    return new RestTemplate();
+  }
 
   public static void main(String[] args) {
     SpringApplication.run(RoutesCalculatorApplication.class, args);

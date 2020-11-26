@@ -20,7 +20,7 @@ import com.routestest.routesservice.dao.RoutesDAO;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
-@RequestMapping("routes")
+@RequestMapping("/routes")
 public class RouteController {
 
   @Autowired

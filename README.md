@@ -10,15 +10,15 @@ The goal is calculate the best route between two different locations, using two 
 
 It's a implementation of the dijkstra's algorithm path-finding
 
-The project uses 3 different containers.
+The project uses 5 different containers.
 
- - **route-calculator**.
+ - **routes-calculator**.
  
 Calculate the best route using the destination and origin passed as parameter.
 
 The possible routes are provided by another rest service (route-service) 
 
- - **route-service**.
+ - **routes-service**.
  
 Allow CRUD actions of the different routes. The routes has the following format:
 
@@ -31,6 +31,10 @@ Allow CRUD actions of the different routes. The routes has the following format:
  - **discovery-service**.
  
 Eureka server instance to auto register the rest services.
+
+ - **routes-gateway**.
+ 
+Zuul proxy implementation to allow the use for the same endpoint for all rest APIs.
 
  - **mysql-standalone**.
 
@@ -59,6 +63,7 @@ The steps are:
     docker build -t demo-routes/routes_service ./routes_service
     docker build -t demo-routes/discovery-service ./discovery-service
     docker build -t demo-routes/routes_calculator ./routes_calculator
+    docker build -t demo-routes/routes-gateway ./routes-gateway
     ```
 
 
@@ -82,6 +87,11 @@ The deployed containers expose the services as rest micro-services
 	 - sample call
 		 - http://localhost:8080/routes
 
+The services are forwarded by Zuul and can be accessed from a single port.
+
+		 - curl http://localhost:8662/Barcelona/Valencia
+		 - curl http://localhost:8662/routes
+
 
 Swagger Documentation are available (after run the project) at the following urls: 
 
@@ -95,7 +105,7 @@ The status of each service can be checked on Eureka server
 ## Architecture used.
 
 The micro-services are developed using [Spring Boot framework](https://spring.io/projects/spring-boot). 
-It creates stand alone application with this own application server embedded.
+It creates a standalone application with his own application server embedded.
 
 The services are registered on the eureka server that allow different possibilities (not all part of this sample code).
 
@@ -105,7 +115,9 @@ The services are registered on the eureka server that allow different possibilit
  - Manage different service versions
  - Service maintenance operations.
 
+The services are fordware by Netflix Zuul, to forward requests to the different application services from a single endpoint.
+
 Swagger UI was used, in order to generate the API documentation, The Swagger interface can be used also to test the rest services.
 
-MySQL was used to store the data. It's a well document DDBB in order to work with java JPA and setup a docker image.
+MySQL was used to store the data. It's a well documented DDBB in order to work with java JPA and setup a docker image.
 
